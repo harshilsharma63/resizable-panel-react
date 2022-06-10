@@ -27,6 +27,14 @@ export default class ResizablePanels extends Component {
     ReactDOM.findDOMNode(this).addEventListener('mouseleave', this.stopResize);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (JSON.stringify(prevProps.panelsSize) !== JSON.stringify(this.props.panelsSize)) {
+      this.setState({
+        panelsSize: this.props.panelsSize,
+      })
+    }
+  }
+
   render() {
     const { bkcolor } = this.props;
     const rest =
@@ -139,6 +147,10 @@ export default class ResizablePanels extends Component {
         panelsSize: nextPanelsSize,
         displacement
       });
+
+      if (this.props.onResize) {
+        this.props.onResize(nextPanelsSize)
+      }
     }
   };
 
